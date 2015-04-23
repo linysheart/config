@@ -1,0 +1,40 @@
+tomcat https 配置
+windows
+1.  D:\apache-tomcat-7.0.54\conf>keytool -v -genkey -alias tomcat -keyalg RSA -keystore server.keystore -validity 360
+	其中server.keystore为保存的文件名
+	参数 -validity 指证书的有效期(天)，缺省有效期很短，只有90天。
+
+输入密钥库口令: 123456
+再次输入新口令: 123456
+您的名字与姓氏是什么?
+  [Unknown]:  acpay
+您的组织单位名称是什么?
+  [Unknown]:  acpay
+您的组织名称是什么?
+  [Unknown]:  acpay
+您所在的城市或区域名称是什么?
+  [Unknown]:  acpay
+您所在的省/市/自治区名称是什么?
+  [Unknown]:  acpay
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:  acpay
+CN=acpay, OU=acpay, O=acpay, L=acpay, ST=acpay, C=acpay是否正确?
+  [否]:  y
+
+正在为以下对象生成 2,048 位RSA密钥对和自签名证书 (SHA256withRSA) (有效期为 360
+天):
+         CN=acpay, OU=acpay, O=acpay, L=acpay, ST=acpay, C=acpay
+输入 <tomcat> 的密钥口令
+        (如果和密钥库口令相同, 按回车):
+[正在存储server.keystore]
+
+2. 修改apache-tomcat-7.0.54/conf/server.xml
+    <Connector port="443" protocol="org.apache.coyote.http11.Http11Protocol"
+           maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+           clientAuth="false" sslProtocol="TLS" 
+           keystoreFile="/conf/server.keystore" keystorePass="123456"
+            />
+    注：server.keystore保存在apache-tomcat-7.0.54/conf下
+
+3. 可以参考tomcat官方文档
+	http://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html
